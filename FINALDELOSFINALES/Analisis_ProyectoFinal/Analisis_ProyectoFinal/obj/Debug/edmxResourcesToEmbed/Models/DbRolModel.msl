@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AnalisisProyectoModel1StoreContainer" CdmEntityContainer="AnalisisProyectoEntities">
+    <EntitySetMapping Name="rol_usuario">
+      <EntityTypeMapping TypeName="AnalisisProyectoModel1.rol_usuario">
+        <MappingFragment StoreEntitySet="rol_usuario">
+          <ScalarProperty Name="id_rol" ColumnName="id_rol" />
+          <ScalarProperty Name="nombre_rol" ColumnName="nombre_rol" />
+          <ScalarProperty Name="desc_rol" ColumnName="desc_rol" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

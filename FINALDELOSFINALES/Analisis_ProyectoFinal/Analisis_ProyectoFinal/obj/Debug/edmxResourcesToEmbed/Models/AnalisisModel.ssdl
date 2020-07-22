@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AnalisisProyectoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ANALISIS.dbo.actualizacion_requisicion' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="actualizacion_requisicion">
+    <Key>
+      <PropertyRef Name="id_requisicion" />
+      <PropertyRef Name="estado_actualizacion" />
+      <PropertyRef Name="encargado" />
+      <PropertyRef Name="fecha_actualizacion" />
+      <PropertyRef Name="fecha_notificacion" />
+      <PropertyRef Name="medio_notificacion" />
+    </Key>
+    <Property Name="id_requisicion" Type="int" Nullable="false" />
+    <Property Name="estado_actualizacion" Type="smallint" Nullable="false" />
+    <Property Name="encargado" Type="int" Nullable="false" />
+    <Property Name="fecha_actualizacion" Type="date" Nullable="false" />
+    <Property Name="descripcion" Type="varchar" MaxLength="25" />
+    <Property Name="fecha_notificacion" Type="date" Nullable="false" />
+    <Property Name="medio_notificacion" Type="varchar" MaxLength="25" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ANALISIS.dbo.correo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="correo">
+    <Key>
+      <PropertyRef Name="usuario" />
+      <PropertyRef Name="fecha_ingreso" />
+      <PropertyRef Name="direccion_correo" />
+    </Key>
+    <Property Name="usuario" Type="int" Nullable="false" />
+    <Property Name="fecha_ingreso" Type="date" Nullable="false" />
+    <Property Name="direccion_correo" Type="varchar" MaxLength="25" Nullable="false" />
+  </EntityType>
+  <EntityType Name="requisicion">
+    <Key>
+      <PropertyRef Name="id_requisicion" />
+    </Key>
+    <Property Name="id_requisicion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="comprador" Type="int" Nullable="false" />
+    <Property Name="monto" Type="int" Nullable="false" />
+    <Property Name="fecha_creacion" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="rol_usuario">
+    <Key>
+      <PropertyRef Name="id_rol" />
+    </Key>
+    <Property Name="id_rol" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre_rol" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="desc_rol" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ANALISIS.dbo.telefono' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="telefono">
+    <Key>
+      <PropertyRef Name="usuario" />
+      <PropertyRef Name="telefono" />
+      <PropertyRef Name="fecha_ingreso" />
+    </Key>
+    <Property Name="usuario" Type="int" Nullable="false" />
+    <Property Name="telefono" Type="int" Nullable="false" />
+    <Property Name="fecha_ingreso" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tipo_estado">
+    <Key>
+      <PropertyRef Name="id_estado" />
+    </Key>
+    <Property Name="id_estado" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="desc_estado" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="id_usuario" />
+    </Key>
+    <Property Name="id_usuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="rol" Type="int" Nullable="false" />
+    <Property Name="username" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="fecha_ingreso" Type="date" Nullable="false" />
+    <Property Name="contraseña" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="apellido" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__actualiza__encar__0C85DE4D">
+    <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+    <End Role="actualizacion_requisicion" Type="Self.actualizacion_requisicion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="actualizacion_requisicion">
+        <PropertyRef Name="encargado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__actualiza__estad__0B91BA14">
+    <End Role="tipo_estado" Type="Self.tipo_estado" Multiplicity="1" />
+    <End Role="actualizacion_requisicion" Type="Self.actualizacion_requisicion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tipo_estado">
+        <PropertyRef Name="id_estado" />
+      </Principal>
+      <Dependent Role="actualizacion_requisicion">
+        <PropertyRef Name="estado_actualizacion" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__actualiza__id_re__0A9D95DB">
+    <End Role="requisicion" Type="Self.requisicion" Multiplicity="1" />
+    <End Role="actualizacion_requisicion" Type="Self.actualizacion_requisicion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="requisicion">
+        <PropertyRef Name="id_requisicion" />
+      </Principal>
+      <Dependent Role="actualizacion_requisicion">
+        <PropertyRef Name="id_requisicion" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__correo__usuario__797309D9">
+    <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+    <End Role="correo" Type="Self.correo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="correo">
+        <PropertyRef Name="usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__requisici__compr__00200768">
+    <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+    <End Role="requisicion" Type="Self.requisicion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="requisicion">
+        <PropertyRef Name="comprador" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__telefono__usuari__7C4F7684">
+    <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+    <End Role="telefono" Type="Self.telefono" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="telefono">
+        <PropertyRef Name="usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__usuario__rol__778AC167">
+    <End Role="rol_usuario" Type="Self.rol_usuario" Multiplicity="1" />
+    <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="rol_usuario">
+        <PropertyRef Name="id_rol" />
+      </Principal>
+      <Dependent Role="usuario">
+        <PropertyRef Name="rol" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AnalisisProyectoModelStoreContainer">
+    <EntitySet Name="requisicion" EntityType="Self.requisicion" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="rol_usuario" EntityType="Self.rol_usuario" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tipo_estado" EntityType="Self.tipo_estado" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="actualizacion_requisicion" EntityType="Self.actualizacion_requisicion" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [actualizacion_requisicion].[id_requisicion] AS [id_requisicion], 
+    [actualizacion_requisicion].[estado_actualizacion] AS [estado_actualizacion], 
+    [actualizacion_requisicion].[encargado] AS [encargado], 
+    [actualizacion_requisicion].[fecha_actualizacion] AS [fecha_actualizacion], 
+    [actualizacion_requisicion].[descripcion] AS [descripcion], 
+    [actualizacion_requisicion].[fecha_notificacion] AS [fecha_notificacion], 
+    [actualizacion_requisicion].[medio_notificacion] AS [medio_notificacion]
+    FROM [dbo].[actualizacion_requisicion] AS [actualizacion_requisicion]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="correo" EntityType="Self.correo" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [correo].[usuario] AS [usuario], 
+    [correo].[fecha_ingreso] AS [fecha_ingreso], 
+    [correo].[direccion_correo] AS [direccion_correo]
+    FROM [dbo].[correo] AS [correo]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="telefono" EntityType="Self.telefono" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [telefono].[usuario] AS [usuario], 
+    [telefono].[telefono] AS [telefono], 
+    [telefono].[fecha_ingreso] AS [fecha_ingreso]
+    FROM [dbo].[telefono] AS [telefono]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK__actualiza__encar__0C85DE4D" Association="Self.FK__actualiza__encar__0C85DE4D">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="actualizacion_requisicion" EntitySet="actualizacion_requisicion" />
+    </AssociationSet>
+    <AssociationSet Name="FK__actualiza__estad__0B91BA14" Association="Self.FK__actualiza__estad__0B91BA14">
+      <End Role="tipo_estado" EntitySet="tipo_estado" />
+      <End Role="actualizacion_requisicion" EntitySet="actualizacion_requisicion" />
+    </AssociationSet>
+    <AssociationSet Name="FK__actualiza__id_re__0A9D95DB" Association="Self.FK__actualiza__id_re__0A9D95DB">
+      <End Role="requisicion" EntitySet="requisicion" />
+      <End Role="actualizacion_requisicion" EntitySet="actualizacion_requisicion" />
+    </AssociationSet>
+    <AssociationSet Name="FK__correo__usuario__797309D9" Association="Self.FK__correo__usuario__797309D9">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="correo" EntitySet="correo" />
+    </AssociationSet>
+    <AssociationSet Name="FK__requisici__compr__00200768" Association="Self.FK__requisici__compr__00200768">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="requisicion" EntitySet="requisicion" />
+    </AssociationSet>
+    <AssociationSet Name="FK__telefono__usuari__7C4F7684" Association="Self.FK__telefono__usuari__7C4F7684">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="telefono" EntitySet="telefono" />
+    </AssociationSet>
+    <AssociationSet Name="FK__usuario__rol__778AC167" Association="Self.FK__usuario__rol__778AC167">
+      <End Role="rol_usuario" EntitySet="rol_usuario" />
+      <End Role="usuario" EntitySet="usuario" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
