@@ -1,0 +1,82 @@
+
+CREATE TABLE rol_usuario (
+    id_rol      INTEGER IDENTITY PRIMARY KEY,
+    nombre_rol  VARCHAR(20) NOT NULL,
+    desc_rol    VARCHAR(20)
+);
+
+
+CREATE TABLE usuario (
+    id_usuario     INTEGER IDENTITY PRIMARY KEY,
+    rol            INTEGER NOT NULL FOREIGN KEY REFERENCES rol_usuario(id_rol),
+    username       VARCHAR(20) NOT NULL,
+    fecha_ingreso  DATE NOT NULL,
+    contraseña     VARCHAR(20) NOT NULL,
+	nombre		   VARCHAR(20) NOT NULL,
+	apellido	   VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE correo (
+    usuario        INTEGER NOT NULL FOREIGN KEY REFERENCES usuario (id_usuario),
+    fecha_ingreso     DATE NOT NULL,
+    direccion_correo  VARCHAR(25) NOT NULL
+);
+
+ALTER TABLE correo ADD CONSTRAINT correo_uk UNIQUE ( direccion_correo );
+
+CREATE TABLE telefono (
+    usuario        INTEGER NOT NULL FOREIGN KEY REFERENCES usuario (id_usuario),
+    telefono       INTEGER NOT NULL,
+    fecha_ingreso  DATE NOT NULL,
+);
+
+ALTER TABLE telefono ADD CONSTRAINT telefono_uk UNIQUE ( telefono);
+
+CREATE TABLE requisicion (
+    id_requisicion  INTEGER IDENTITY PRIMARY KEY,
+    comprador       INTEGER NOT NULL FOREIGN KEY REFERENCES usuario(id_usuario),
+    monto           INTEGER NOT NULL,
+    fecha_creacion  DATE NOT NULL
+);
+
+CREATE TABLE tipo_estado (
+    id_estado    SMALLINT IDENTITY PRIMARY KEY,
+    desc_estado  VARCHAR(20) UNIQUE
+);
+
+CREATE TABLE actualizacion_requisicion (
+    id_requisicion        INTEGER NOT NULL FOREIGN KEY REFERENCES requisicion(id_requisicion),
+    estado_actualizacion  SMALLINT NOT NULL FOREIGN KEY REFERENCES tipo_estado(id_estado),
+    encargado             INTEGER NOT NULL FOREIGN KEY REFERENCES usuario(id_usuario),
+    fecha_actualizacion   DATE NOT NULL,
+    descripcion           VARCHAR(25),
+    fecha_notificacion    DATE NOT NULL,
+    medio_notificacion    VARCHAR(25) NOT NULL
+);
+
+
+insert into rol_usuario(nombre_rol,desc_rol)
+values ('Cliente','Busca Servicio');
+
+insert into rol_usuario(nombre_rol,desc_rol)
+values ('P1','Busca Servicio');
+
+insert into rol_usuario(nombre_rol,desc_rol)
+values ('P2','Busca Servicio');
+Select * from usuario
+
+insert into usuario(rol, username, fecha_ingreso, contraseña, nombre, apellido )
+values (1, 'pitica99','1999-08-03', 123, 'pitica', 'sandoval');
+
+
+insert into correo(usuario, fecha_ingreso, direccion_correo)
+values (1,'1999-08-03', 'a@gmail.com' );
+
+insert into tipo_estado(desc_estado)
+values ('Malo'); 
+
+insert into requisicion(comprador, monto, fecha_creacion)
+values ( 1, 1000, '1999-08-03');
+
+insert  into actualizacion_requisicion (id_requisicion, estado_actualizacion, encargado, fecha_actualizacion, descripcion, fecha_notificacion, medio_notificacion)
+values (1,1,1,'1999-08-03', 'Descripcion','1999-08-03', 'Correo Electronico' )
